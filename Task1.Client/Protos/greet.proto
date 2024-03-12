@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcGreeterClient";
+
+package greet;
+
+
+service Game {
+	rpc Login (UserLogin) returns (UserIdentity);
+	rpc Balance (UserIdentity) returns (UserBalance);
+
+	rpc Matches (UserIdentity) returns (MatchList);
+	rpc Create (CreateMatch) returns (MatchCreated);
+	rpc Connect (ConnectMatch) returns (MatchStarted);
+	rpc Play (MatchAction) returns (MatchResults);
+}
+
+message UserLogin{
+	string Login = 1;
+}
+
+message UserIdentity {
+	int32 UserId = 1;
+}
+
+message UserBalance{
+	int32 Sum = 1;
+}
+
+message CreateMatch {
+	int32 UserId = 1;
+	int32 Sum = 2;
+}
+
+message MatchCreated {
+	int32 MatchId = 1;
+	int32 Sum = 2;
+}
+
+message Match {
+	int32 Id = 1;
+	int32 Sum = 2;
+	bool HaveOpponent = 3;
+}
+
+message MatchList {
+	repeated Match matches = 1;
+}
+
+message ConnectMatch {
+	int32 UserId = 1;
+	int32 MatchId = 2;
+}
+
+message MatchStarted {
+	string OpponentName = 1;
+}
+
+enum MatchActions {
+	K = 0;
+	N = 1;
+	B = 2;
+}
+
+message MatchAction {
+	int32 UserId = 1;
+	int32 MatchId = 2;
+	MatchActions Action = 3;
+}
+
+message MatchResults {
+	string MatchSummary = 1;
+	int32 Sum = 2;
+}
